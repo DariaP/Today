@@ -1,0 +1,44 @@
+
+body {
+  background: #eeeeee;
+}
+
+.app {
+  width: 500px;
+  padding: 10px;
+  background: #ffffff;
+  margin-top: 40px;
+  border-color: #428bca;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 4px;
+}
+
+.app h2 {
+  text-align: center;
+}
+
+.app textarea { 
+  font-size: 20px;
+}
+
+.list {
+  margin-top: 20px;
+  width: 500px;
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  padding: 5px;
+}
+
+.date {
+  color: #428bca;
+}
+
+.question {
+  color: #aaaaaa;
+}

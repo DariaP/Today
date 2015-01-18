@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Daria Kashcha dashka.kh@gmail.com">
+
+  <title></title>
+
+  <link rel="stylesheet" href="css/lib/bootstrap.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script src="js/lib/jquery-1.11.1.min.js"></script>
+  <script src="js/lib/bootstrap.min.js"></script>
+  <script src="js/lib/lodash.underscore.min.js"></script>
+  <script src="js/lib/backbone-min.js"></script>
+
+  <script src='js/main.js'></script>
+
+</head>
+
+<body>
+  <div class="container app">
+    <form>
+      <div class="form-group">
+        <textarea class="form-control" name="done" placeholder="What have I learned today?"></textarea>
+      </div>
+      <div class="form-group">
+        <textarea class="form-control" name="diff" placeholder="What would I do differently?"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+  </div>
+  <div class="container list">
+    <ul></ul>
+  </div>
+</body>
+
+  <script type="text/template" id="days-template">
+    <ul></ul>
+  </script>
+
+  <script type="text/template" id="day-template">
+  <div class='date'><%- date %></div>
+  <div class='question'>What have I learned today?</div>
+  <div class='answer'><%- done %></div>
+  <div class='question'>What would I do differently?</div>
+  <div class='answer'><%- diff %></div>
+  </script>
+
+</html>
