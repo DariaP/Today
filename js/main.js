@@ -7,7 +7,13 @@ $(function () {
 
   var Days = Backbone.Collection.extend({
     model: Day,
-    url: 'http://localhost:8089/days'
+
+    initialize: function() {
+      var href = $(location).attr('href');
+      var code = href.substring(href.indexOf("=") + 1);
+      this.url = 'http://localhost:8089/days?code=' + code;
+    }
+
   });
 
   var DayView = Backbone.View.extend({
