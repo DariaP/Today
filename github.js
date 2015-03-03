@@ -70,7 +70,7 @@ function getToken(code, host, callback) {
 
     oauth.authCode.getToken({
         code: code,
-        redirect_uri: 'http:///' + host + '/today.html'
+        redirect_uri: 'https://' + host + '/today.html'
       }, 
       function(error, result) {
         if (error) { console.log('Access Token Error', error.message); }
