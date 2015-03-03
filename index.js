@@ -18,6 +18,7 @@ function start() {
   app.get('/days', function (req, res) {
     github.getData(
       req.query.code, 
+      req.headers.host,
       function(content) {
         parser.parseRecords(content, function(records) {
           res.send(records);
@@ -29,6 +30,7 @@ function start() {
   app.post('/days', function (req, res) {
     github.appendData(
       req.query.code,
+      req.headers.host,
       parser.makeRecord(req.body)
     );
   });

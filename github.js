@@ -11,19 +11,19 @@ var github = new GitHubApi({
 
 var gistIds = {}, tokens = {};
 
-function getData(code, callback) {
-  getGist(code, callback);
+function getData(code, host, callback) {
+  getGist(code, host, callback);
 }
 
-function appendData(code, record, callback) {
-  getGist(code, function(content) {
+function appendData(code, record, host, callback) {
+  getGist(code, host, function(content) {
     var newContent = content + record;
-    editGist(code, newContent);
+    editGist(code, url, newContent);
   });
 }
 
-function getGist(code, callback) {
-  getToken(code, function(token) {
+function getGist(code, host, callback) {
+  getToken(code, host, function(token) {
     getGistId(token, function(id) {
       readGist(token, id, function(data) {
         callback(data);
@@ -32,8 +32,8 @@ function getGist(code, callback) {
   });
 }
 
-function editGist(code, content) {
-  getToken(code, function(token) {
+function editGist(code, host, content) {
+  getToken(code, host, function(token) {
     getGistId(token, function(id) {
 
       github.authenticate({
@@ -58,7 +58,7 @@ function editGist(code, content) {
   });
 }
 
-function getToken(code, callback) {
+function getToken(code, host, callback) {
   if (!tokens[code]) {
 
     var oauth = simpleOauth2({
@@ -70,7 +70,7 @@ function getToken(code, callback) {
 
     oauth.authCode.getToken({
         code: code,
-        redirect_uri: 'http:///localhost:8000/today.html'
+        redirect_uri: 'http:///' + host + '/today.html'
       }, 
       function(error, result) {
         if (error) { console.log('Access Token Error', error.message); }

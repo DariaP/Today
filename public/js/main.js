@@ -11,7 +11,8 @@ $(function () {
     initialize: function() {
       var href = $(location).attr('href');
       var code = href.substring(href.indexOf("=") + 1);
-      this.url = 'http://localhost:8000/days?code=' + code;
+
+      this.url = 'http://' + window.location.host + '/days?code=' + code;
     }
 
   });
