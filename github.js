@@ -18,7 +18,7 @@ function getData(code, host, callback) {
 function appendData(code, record, host, callback) {
   getGist(code, host, function(content) {
     var newContent = content + record;
-    editGist(code, url, newContent);
+    editGist(code, host, newContent);
   });
 }
 
