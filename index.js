@@ -12,6 +12,7 @@ function start() {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded());
 
+  app.set('port', (process.env.PORT || 5000));
   app.use('/', express.static(__dirname + '/public'));
 
   app.get('/days', function (req, res) {
@@ -32,7 +33,7 @@ function start() {
     );
   });
 
-  app.listen(8000);
+  app.listen(app.get('port'));
 }
 
 start();
