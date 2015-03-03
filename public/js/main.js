@@ -12,7 +12,7 @@ $(function () {
       var href = $(location).attr('href');
       var code = href.substring(href.indexOf("=") + 1);
 
-      this.url = 'http://' + window.location.host + '/days?code=' + code;
+      this.url = 'https://' + window.location.host + '/days?code=' + code;
     }
 
   });
