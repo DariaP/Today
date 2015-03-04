@@ -25,9 +25,13 @@ function appendData(code, record, host, callback) {
 function getGist(code, host, callback) {
   getToken(code, host, function(token) {
     getGistId(token, function(id) {
-      readGist(token, id, function(data) {
-        callback(data);
-      });
+      if (id == 0) {
+        callback({});
+      } else {
+        readGist(token, id, function(data) {
+          callback(data);
+        });        
+      }
     });
   });
 }
@@ -41,19 +45,35 @@ function editGist(code, host, content) {
         token: token
       });
 
-      var params = {
-        id: id,
-        files: {}
-      };
-      params.files[filename] = {
-        content: content
-      };
-      github.gists.edit(
-        params,
-        function(err, res) {
-          ;
-        }
-      );
+      if (id == 0) {
+        var params = {
+          public: "false",
+          files: {}
+        };
+        params.files[filename] = {
+          content: content
+        };
+        github.gists.create(
+          params,
+          function(err, res) {
+            console.log(err);
+          }
+        );
+      } else {
+        var params = {
+          id: id,
+          files: {}
+        };
+        params.files[filename] = {
+          content: content
+        };
+        github.gists.edit(
+          params,
+          function(err, res) {
+            console.log(err);
+          }
+        );
+      }
     });
   });
 }
@@ -101,7 +121,9 @@ function getGistId(token, callback) {
         if (gist.files[filename]) {
           gistIds[token] = gist.id;
           callback(gist.id);
+          return;
         }
+        callback(0);
       }
     });
   } else {
