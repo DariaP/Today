@@ -123,8 +123,8 @@ function getGistId(token, callback) {
           callback(gist.id);
           return;
         }
-        callback(0);
       }
+      callback(0);
     });
   } else {
     callback(gistIds[token]);
