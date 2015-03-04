@@ -30,8 +30,8 @@ function start() {
   app.post('/days', function (req, res) {
     github.appendData(
       req.query.code,
-      req.headers.host,
-      parser.makeRecord(req.body)
+      parser.makeRecord(req.body),
+      req.headers.host
     );
   });
 
