@@ -17,8 +17,12 @@ function getData(code, host, callback) {
 
 function appendData(code, record, host, callback) {
   getGist(code, host, function(content) {
-    var newContent = content + record;
-    editGist(code, host, newContent);
+    if (content) {
+      var newContent = content + record;
+      editGist(code, host, newContent);
+    } else {
+      createGist(code, host, record)
+    }
   });
 }
 
@@ -45,36 +49,44 @@ function editGist(code, host, content) {
         token: token
       });
 
-      if (id == 0) {
-        var params = {
-          public: "false",
-          files: {}
-        };
-        params.files[filename] = {
-          content: content
-        };
-        github.gists.create(
-          params,
-          function(err, res) {
-            console.log(err);
-          }
-        );
-      } else {
-        var params = {
-          id: id,
-          files: {}
-        };
-        params.files[filename] = {
-          content: content
-        };
-        github.gists.edit(
-          params,
-          function(err, res) {
-            console.log(err);
-          }
-        );
-      }
+      var params = {
+        id: id,
+        files: {}
+      };
+      params.files[filename] = {
+        content: content
+      };
+      github.gists.edit(
+        params,
+        function(err, res) {
+          console.log(err);
+        }
+      );
     });
+  });
+}
+
+function createGist(code, host, content) {
+  getToken(code, host, function(token) {
+
+    github.authenticate({
+      type: "oauth",
+      token: token
+    });
+
+    var params = {
+      public: "false",
+      files: {}
+    };
+    params.files[filename] = {
+      content: content
+    };
+    github.gists.create(
+      params,
+      function(err, res) {
+        console.log(err);
+      }
+    );
   });
 }
 
