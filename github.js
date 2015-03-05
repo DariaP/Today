@@ -26,7 +26,7 @@ function getGist(code, host, callback) {
   getToken(code, host, function(token) {
     getGistId(token, function(id) {
       if (id == 0) {
-        callback({});
+        callback(null);
       } else {
         readGist(token, id, function(data) {
           callback(data);

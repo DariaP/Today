@@ -20,9 +20,13 @@ function start() {
       req.query.code, 
       req.headers.host,
       function(content) {
-        parser.parseRecords(content, function(records) {
-          res.send(records);
-        });
+        if (content) {
+          parser.parseRecords(content, function(records) {
+            res.send(records);
+          });
+        } else {
+          res.send({});
+        }
       }
     );
   });
