@@ -25,7 +25,7 @@ function start() {
             res.send(records);
           });
         } else {
-          res.send({});
+          res.send([]);
         }
       }
     );
