@@ -35,7 +35,10 @@ function start() {
     github.appendData(
       req.query.code,
       parser.makeRecord(req.body),
-      req.headers.host
+      req.headers.host,
+      function() {
+        res.status(200);
+      }
     );
   });
 
