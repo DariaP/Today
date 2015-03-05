@@ -1,5 +1,5 @@
 
-var filename = "todayAppTest.txt"
+var filename = "todayAppTest.md"
 var secret = process.env.GITHUB_CLIENT_SECRET;
 
 var simpleOauth2 = require('simple-oauth2'),
