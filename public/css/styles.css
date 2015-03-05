@@ -42,3 +42,20 @@ li {
 .question {
   color: #aaaaaa;
 }
+
+
+.login {
+  margin-top: 100px;
+  width: 500px;
+}
+
+.login-btn {
+  background: #ffffff;
+  border-color: #428bca;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 4px;
+  width: 100%;
+  font-size: 18px;
+  color: black;
+}
