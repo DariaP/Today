@@ -111,6 +111,8 @@ function getToken(code, host, callback) {
           console.log('Access Token Error', error);
         }
 
+        console.log(result);
+
         var token = result.substring(result.indexOf("=") + 1, result.indexOf("&"));
         console.log(token);
         tokens[code] = token;
