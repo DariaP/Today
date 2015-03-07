@@ -108,7 +108,7 @@ function getToken(code, host, callback) {
       }, 
       function(error, result) {
         if (error) { 
-          console.log('Access Token Error', error.message);
+          console.log('Access Token Error', error);
         }
 
         var token = result.substring(result.indexOf("=") + 1, result.indexOf("&"));
