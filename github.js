@@ -1,15 +1,17 @@
 
-var filename = "todayAppTest.md"
-var secret = process.env.GITHUB_CLIENT_SECRET;
-
 var simpleOauth2 = require('simple-oauth2'),
     GitHubApi = require("github");
 
-var github = new GitHubApi({
-  version: "3.0.0",
-});
+var filename = "todayAppTest.md",
+    clientId = "629d6f58d67ac0082a37",
+    clientSecret = process.env.GITHUB_CLIENT_SECRET,
 
-var gistIds = {}, tokens = {};
+    github = new GitHubApi({
+      version: "3.0.0",
+    }),
+
+    gistIds = {},
+    tokens = {};
 
 function getData(code, host, callback) {
   getGist(code, host, callback);
@@ -94,8 +96,8 @@ function getToken(code, host, callback) {
   if (!tokens[code]) {
 
     var oauth = simpleOauth2({
-      clientID: '629d6f58d67ac0082a37',
-      clientSecret: secret,
+      clientID: clientId,
+      clientSecret: clientSecret,
       site: 'https://github.com/login',
       tokenPath: '/oauth/access_token'
     });

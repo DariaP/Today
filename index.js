@@ -2,11 +2,11 @@ function start() {
 
   var express = require('express'),
       github = require('./github.js'),
-      parser = require('./parser.js');
+      parser = require('./parser.js'),
+      cors = require('cors'),
+      bodyParser = require('body-parser');
 
-  var cors = require('cors'),
-      bodyParser = require('body-parser'),
-      app = express();
+  var app = express();
 
   app.use(cors());
   app.use(bodyParser.json());
