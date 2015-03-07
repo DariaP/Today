@@ -107,10 +107,12 @@ function getToken(code, host, callback) {
         redirect_uri: 'https://' + host + '/today.html'
       }, 
       function(error, result) {
-        if (error) { console.log('Access Token Error', error.message); }
+        if (error) { 
+          console.log('Access Token Error', error.message);
+        }
 
         var token = result.substring(result.indexOf("=") + 1, result.indexOf("&"));
-
+        console.log(token);
         tokens[code] = token;
 
         callback(token);
@@ -130,6 +132,10 @@ function getGistId(token, callback) {
     });
 
     github.gists.getAll({}, function(err, gists) {
+      if (err) {
+        console.log(err);
+      }
+
       for (var i = 0 ; i < gists.length ; ++i) {
         var gist = gists[i];
         if (gist.files[filename]) {
@@ -152,6 +158,10 @@ function readGist(token, id, callback) {
   });
 
   github.gists.get({id: id}, function (err, gist) {
+    if (err) {
+      console.log(err);
+    }
+
     callback(gist.files[filename].content);
   });
 }
