@@ -13,6 +13,13 @@ var filename = "todayAppTest.md",
     gistIds = {},
     tokens = {};
 
+if (typeof String.prototype.startsWith != 'function') {
+  // see below for better implementation!
+  String.prototype.startsWith = function (str){
+    return this.substring(0, str.length) === str;
+  };
+}
+
 function getData(code, host, callback) {
   getGist(code, host, callback);
 }
@@ -29,16 +36,20 @@ function appendData(code, record, host, callback) {
 }
 
 function getGist(code, host, callback) {
-  getToken(code, host, function(token) {
-    getGistId(token, function(id) {
-      if (id == 0) {
-        callback(null);
-      } else {
-        readGist(token, id, function(data) {
-          callback(data);
-        });        
-      }
-    });
+  getToken(code, host, function(token, err) {
+    if (token) {
+      getGistId(token, function(id) {
+        if (id == 0) {
+          callback(null);
+        } else {
+          readGist(token, id, function(data) {
+            callback(data);
+          });        
+        }
+      });
+    } else {
+      callback(null, err);      
+    }
   });
 }
 
@@ -104,20 +115,26 @@ function getToken(code, host, callback) {
 
     oauth.authCode.getToken({
         code: code,
-        redirect_uri: 'https://' + host + '/today.html'
+        redirect_uri: 'http://' + host + '/today.html'
       }, 
       function(error, result) {
-        if (error) { 
-          console.log('Access Token Error', error);
+
+        if (result.startsWith("error=")) { 
+          var err = result.substring(result.indexOf("=") + 1, result.indexOf("&"));
+          if (err === "bad_verification_code") {
+            callback(null, {
+              badCode: true
+            });
+          } else {
+            callback(null, {});            
+          }
+        } else {
+          var token = result.substring(result.indexOf("=") + 1, result.indexOf("&"));
+
+          tokens[code] = token;
+
+          callback(token);
         }
-
-        console.log(result);
-
-        var token = result.substring(result.indexOf("=") + 1, result.indexOf("&"));
-        console.log(token);
-        tokens[code] = token;
-
-        callback(token);
       }
     );      
   } else {

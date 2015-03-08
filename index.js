@@ -19,13 +19,22 @@ function start() {
     github.getData(
       req.query.code, 
       req.headers.host,
-      function(content) {
+      function(content, err) {
         if (content) {
           parser.parseRecords(content, function(records) {
             res.send(records);
           });
         } else {
-          res.send([]);
+          if (err && err.badCode) {
+            res.send({
+              done: "",
+              diff: "",
+              date: "",
+              badCode: true
+            });
+          } else {
+            res.send([]);
+          }
         }
       }
     );

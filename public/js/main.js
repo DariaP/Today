@@ -12,7 +12,7 @@ $(function () {
       var href = $(location).attr('href');
       var code = href.substring(href.indexOf("=") + 1);
 
-      this.url = 'https://' + window.location.host + '/days?code=' + code;
+      this.url = 'http://' + window.location.host + '/days?code=' + code;
     }
 
   });
@@ -58,17 +58,20 @@ $(function () {
     getDate: function() {
       var today = new Date();
       var dd = today.getDate();
-      var mm = today.getMonth()+1; //January is 0!
+      var mm = today.getMonth() + 1; //January is 0!
       var yyyy = today.getFullYear();
 
-      if(dd<10) {
-          dd='0'+dd
+      if(dd < 10) {
+          dd = '0' + dd;
       } 
 
-      return mm+'/'+dd+'/'+yyyy;
+      return mm + '/' + dd + '/' + yyyy;
     },
 
     showDay: function(day) {
+      if (day.attributes.badCode) {
+        window.location.href = "http://localhost:8000/";
+      }
       var dayView = new DayView({model: day}).render();
       this.$('ul').prepend(dayView.el);
     }
