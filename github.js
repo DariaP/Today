@@ -1,4 +1,6 @@
 
+// API to get/edit gist
+
 var simpleOauth2 = require('simple-oauth2'),
     GitHubApi = require("github");
 
@@ -38,9 +40,9 @@ function appendData(code, record, host, callback) {
 function getGist(code, host, callback) {
   getToken(code, host, function(token, err) {
     if (token) {
-      getGistId(token, function(id) {
-        if (id == 0) {
-          callback(null);
+      getGistId(token, function(id, err) {
+        if (err || id == 0) {
+          callback(null, err);
         } else {
           readGist(token, id, function(data) {
             callback(data);
@@ -53,7 +55,7 @@ function getGist(code, host, callback) {
   });
 }
 
-function editGist(code, host, content) {
+function editGist(code, host, content, callback) {
   getToken(code, host, function(token) {
     getGistId(token, function(id) {
 
@@ -72,14 +74,14 @@ function editGist(code, host, content) {
       github.gists.edit(
         params,
         function(err, res) {
-          console.log(err);
+          handleErr(err, callback);
         }
       );
     });
   });
 }
 
-function createGist(code, host, content) {
+function createGist(code, host, content, callback) {
   getToken(code, host, function(token) {
 
     github.authenticate({
@@ -97,7 +99,7 @@ function createGist(code, host, content) {
     github.gists.create(
       params,
       function(err, res) {
-        console.log(err);
+        handleErr(err, callback);
       }
     );
   });
@@ -119,13 +121,17 @@ function getToken(code, host, callback) {
       }, 
       function(error, result) {
 
-        if (result.startsWith("error=")) { 
+        if (result.startsWith("error=")) {
+
           var err = result.substring(result.indexOf("=") + 1, result.indexOf("&"));
+
           if (err === "bad_verification_code") {
             callback(null, {
               badCode: true
             });
           } else {
+            console.log(result);
+            console.trace();
             callback(null, {});            
           }
         } else {
@@ -152,22 +158,26 @@ function getGistId(token, callback) {
 
     github.gists.getAll({}, function(err, gists) {
       if (err) {
-        console.log(err);
+        callback(0, err);
+      } else {
+        var id = findGistId(gists);
+        gistIds[token] = id; //TODO: could use this to track failed tokens
+        callback(id);
       }
-
-      for (var i = 0 ; i < gists.length ; ++i) {
-        var gist = gists[i];
-        if (gist.files[filename]) {
-          gistIds[token] = gist.id;
-          callback(gist.id);
-          return;
-        }
-      }
-      callback(0);
     });
   } else {
     callback(gistIds[token]);
   }
+}
+
+function findGistId(gists) {
+  for (var i = 0 ; i < gists.length ; ++i) {
+    var gist = gists[i];
+    if (gist.files[filename]) {
+      return gist.id
+    }
+  }
+  return 0;
 }
 
 function readGist(token, id, callback) {
@@ -179,10 +189,22 @@ function readGist(token, id, callback) {
   github.gists.get({id: id}, function (err, gist) {
     if (err) {
       console.log(err);
+      console.trace();
+      callback([]);
+    } else {
+      callback(gist.files[filename].content);
     }
-
-    callback(gist.files[filename].content);
   });
+}
+
+function handleErr(err, callback) {
+  if (err) {
+    console.log(err);
+    console.trace();
+    if (callback) {
+      callback(err);
+    }
+  }
 }
 
 module.exports = {
