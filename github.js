@@ -29,7 +29,7 @@ function getData(code, host, callback) {
 function appendData(code, record, host, callback) {
   getGist(code, host, function(content) {
     if (content) {
-      var newContent = content + record;
+      var newContent = record + content;
       editGist(code, host, newContent);
     } else {
       createGist(code, host, record)

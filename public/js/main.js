@@ -73,7 +73,7 @@ $(function () {
         window.location.href = "http://localhost:8000/";
       }
       var dayView = new DayView({model: day}).render();
-      this.$('ul').prepend(dayView.el);
+      this.$('ul').append(dayView.el);
     }
   });
 

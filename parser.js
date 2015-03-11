@@ -22,11 +22,11 @@ function parseRecords(data, callback) {
 }
 
 function makeRecord(data) {
-  return "\n \n# " + data.date +
+  return "# " + data.date +
          "\n## what have I learned today?\n" +
          data.done + 
          "\n \n## what would I do differently?\n" +
-         data.diff;
+         data.diff + "\n \n# " + ;
 }
 
 module.exports = {
