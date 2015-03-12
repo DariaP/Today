@@ -5,7 +5,7 @@ function parseRecords(data, callback) {
   var records = [],
       html = markdown.toHTML(data),
       $ = cheerio.load(html),
-      dates = $('h1');
+      dates = $('h4');
 
   dates.each(function(i) {
     var date = $(this),
@@ -22,11 +22,11 @@ function parseRecords(data, callback) {
 }
 
 function makeRecord(data) {
-  return "# " + data.date +
-         "\n## what have I learned today?\n" +
+  return "#### " + data.date +
+         "\n#####  what have I learned today?\n" +
          data.done + 
-         "\n \n## what would I do differently?\n" +
-         data.diff + "\n \n# " + ;
+         "\n \n##### what would I do differently?\n" +
+         data.diff + "\n \n# ";
 }
 
 module.exports = {
