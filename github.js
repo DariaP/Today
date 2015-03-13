@@ -46,7 +46,7 @@ function getGist(code, host, callback) {
         } else {
           readGist(token, id, function(data) {
             callback(data);
-          });        
+          });
         }
       });
     } else {
@@ -56,8 +56,38 @@ function getGist(code, host, callback) {
 }
 
 function editGist(code, host, content, callback) {
-  getToken(code, host, function(token) {
-    getGistId(token, function(id) {
+  getToken(code, host, function(token, err) {
+    if (token) {
+      getGistId(token, function(id) {
+
+        github.authenticate({
+          type: "oauth",
+          token: token
+        });
+
+        var params = {
+          id: id,
+          files: {}
+        };
+        params.files[filename] = {
+          content: content
+        };
+        github.gists.edit(
+          params,
+          function(err, res) {
+            handleErr(err, callback);
+          }
+        );
+      });
+    } else {
+      handleErr(err, callback);
+    }
+  });
+}
+
+function createGist(code, host, content, callback) {
+  getToken(code, host, function(token, err) {
+    if (token) {
 
       github.authenticate({
         type: "oauth",
@@ -65,43 +95,21 @@ function editGist(code, host, content, callback) {
       });
 
       var params = {
-        id: id,
+        public: "false",
         files: {}
       };
       params.files[filename] = {
         content: content
       };
-      github.gists.edit(
+      github.gists.create(
         params,
         function(err, res) {
           handleErr(err, callback);
         }
       );
-    });
-  });
-}
-
-function createGist(code, host, content, callback) {
-  getToken(code, host, function(token) {
-
-    github.authenticate({
-      type: "oauth",
-      token: token
-    });
-
-    var params = {
-      public: "false",
-      files: {}
-    };
-    params.files[filename] = {
-      content: content
-    };
-    github.gists.create(
-      params,
-      function(err, res) {
-        handleErr(err, callback);
-      }
-    );
+    } else {
+      handleErr(err, callback);
+    }
   });
 }
 
